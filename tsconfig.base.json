@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "composite": true,
     "declarationMap": true,
     "emitDeclarationOnly": true,
     "importHelpers": true,
     "isolatedModules": true,
     "lib": ["es2022"],
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
@@ -16,6 +17,9 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["@multi-vendor-ecommerce/source"]
+    "customConditions": ["@multi-vendor-ecommerce/source"],
+    "paths": {
+      "@multi-vendor-ecommerce/error-handler": ["packages/error-handler/index.ts"]
+    }
   }
 }
