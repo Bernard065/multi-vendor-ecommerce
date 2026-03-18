@@ -15,10 +15,10 @@
       }
     },
     "typecheck": {
-      "executor": "@nx/js:typecheck",
+      "executor": "nx:run-commands",
       "options": {
-        "tsConfig": "packages/error-handler/tsconfig.json",
-        "main": "packages/error-handler/index.ts"
+        "command": "tsc --noEmit --project packages/error-handler/tsconfig.json",
+        "cwd": "."
       }
     }
   }
