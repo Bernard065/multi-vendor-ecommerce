@@ -1,0 +1,12 @@
+{
+  "name": "@multi-vendor-ecommerce/prisma",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./prisma.ts",
+  "types": "./prisma.ts",
+  "exports": {
+    ".": "./prisma.ts",
+    "./redis": "./redis.ts"
+  }
+}

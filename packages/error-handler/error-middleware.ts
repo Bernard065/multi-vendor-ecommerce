@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { AppError } from './index';
 
-export const errorMiddleware = (err: AppError, req: Request, res: Response, next: NextFunction) => {
+export const errorMiddleware = (err: AppError, req: Request, res: Response) => {
     if (err instanceof AppError) {
         return res.status(err.statusCode).json({
             message: err.message,

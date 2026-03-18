@@ -16,10 +16,12 @@
     "noUnusedLocals": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "es2022",
+    "target": "es2015",
     "customConditions": ["@multi-vendor-ecommerce/source"],
     "paths": {
-      "@multi-vendor-ecommerce/error-handler": ["packages/error-handler/index.ts"]
+      "@multi-vendor-ecommerce/error-handler": ["packages/error-handler/index.ts"],
+      "@multi-vendor-ecommerce/prisma": ["libs/prisma.ts"],
+      "@multi-vendor-ecommerce/redis": ["libs/redis/redis.ts"]
     }
   }
 }
