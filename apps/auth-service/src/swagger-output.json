@@ -6,24 +6,40 @@
     "version": "1.0.0"
   },
   "host": "localhost:6001",
-  "basePath": "/api",
+  "basePath": "/",
   "schemes": [
     "http"
   ],
   "paths": {
-    "/user-registration": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/docs-json": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/user-registration": {
       "post": {
-        "summary": "Register a new user",
-        "tags": ["Auth"],
-        "description": "Register a new user and send OTP to email for verification",
+        "description": "",
         "parameters": [
           {
-            "in": "body",
             "name": "body",
-            "required": true,
+            "in": "body",
             "schema": {
               "type": "object",
-              "required": ["name", "email"],
               "properties": {
                 "name": {
                   "type": "string",
@@ -31,24 +47,39 @@
                 },
                 "email": {
                   "type": "string",
-                  "format": "email",
-                  "example": "johndoe@gmail.com"
+                  "example": "user@example.com"
                 },
                 "password": {
                   "type": "string",
-                  "minLength": 8,
-                  "description": "Optional - required only if not using Google login",
                   "example": "password123"
+                }
+              },
+              "required": ["name", "email", "password"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/verify-user": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
                 },
-                "phone_number": {
-                  "type": "string",
-                  "description": "Optional - required only for sellers",
-                  "example": "+1234567890"
-                },
-                "country": {
-                  "type": "string",
-                  "description": "Optional - required only for sellers",
-                  "example": "USA"
+                "otp": {
+                  "example": "any"
                 }
               }
             }
@@ -56,13 +87,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OTP sent to email for verification"
-          },
-          "400": {
-            "description": "Validation error"
-          },
-          "409": {
-            "description": "Email already registered"
+            "description": "OK"
           }
         }
       }

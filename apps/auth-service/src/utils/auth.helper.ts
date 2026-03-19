@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import redis from "@multi-vendor-ecommerce/redis";
 import { sendEmail } from "./sendMail";
 import bcrypt from 'bcryptjs';
+import { NextFunction } from "express";
 
 const SALT_ROUNDS = 10;
 
@@ -83,4 +84,32 @@ export const sendOtp = async (email: string, name: string, template: string) => 
   await redis.set(`otp:${email}`, otp, { ex: 300 }); // Store OTP in Redis with a 5-minute expiration
 
   await redis.set(`otp_cooldown:${email}`, 'true', { ex: 60 }); // Set cooldown for OTP requests (e.g., 1 minute)
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const verifyOtp = async (email: string, otp: string, next: NextFunction) => {
+  const storedOtp = await redis.get(`otp:${email}`);
+
+  if (!storedOtp) {
+    throw new ValidationError('OTP has expired or is invalid');
+  }
+
+  const failedAttemptsKey = `otp_failed_attempts:${email}`;
+  const failedAttempts = parseInt(await redis.get(failedAttemptsKey) || '0');
+
+  // Compare as strings to handle type mismatch (Redis returns number, user sends string)
+  if (String(storedOtp).trim() !== String(otp).trim()) {
+    if (failedAttempts >= 2) {
+      await redis.set(`otp_lock:${email}`, 'locked', { ex: 1800 }); // Lock for 30 minutes
+      await redis.del(`otp:${email}`, failedAttemptsKey); // Clear OTP and failed attempts
+
+      throw new ValidationError('Too many failed attempts. Please try again later.');
+    }
+
+    await redis.set(failedAttemptsKey, (failedAttempts + 1).toString(), { ex: 300 }); // Increment failed attempts with 5-minute expiration
+
+    throw new ValidationError('Invalid OTP. Please try again.');
+  }
+
+  await redis.del(`otp:${email}`, failedAttemptsKey); // Clear OTP and failed attempts on successful verification
 }
