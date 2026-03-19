@@ -11,7 +11,7 @@
  * Please import the `PrismaClient` class from the `client.ts` file instead.
  */
 
-import * as runtime from "@prisma/client/runtime/library"
+import * as runtime from "@prisma/client/runtime/binary"
 import type * as Prisma from "./prismaNamespace"
 
 
@@ -23,11 +23,11 @@ const config: runtime.GetPrismaClientConfig = {
       "value": "prisma-client"
     },
     "output": {
-      "value": "/home/bebeni/Development/multi-vendor-ecommerce/lib/generated/prisma",
+      "value": "/home/bebeni/Development/multi-vendor-ecommerce/libs/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
-      "engineType": "library"
+      "engineType": "binary"
     },
     "binaryTargets": [
       {
@@ -56,8 +56,8 @@ const config: runtime.GetPrismaClientConfig = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../lib/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"mongodb\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        String   @id @default(auto()) @map(\"_id\") @db.ObjectId\n  email     String   @unique\n  password  String?\n  name      String\n  following String[]\n\n  images Image[]\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Image {\n  id      String @id @default(auto()) @map(\"_id\") @db.ObjectId\n  file_id String\n  url     String\n\n  userId String @db.ObjectId\n  user   User   @relation(fields: [userId], references: [id])\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n",
-  "inlineSchemaHash": "91373e8cf7d38c11c10de8b6518ce2c9e7cb37203f2374b5b963cfcbccef2b8c",
+  "inlineSchema": "generator client {\n  provider   = \"prisma-client\"\n  output     = \"../libs/generated/prisma\"\n  engineType = \"binary\"\n}\n\ndatasource db {\n  provider = \"mongodb\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        String   @id @default(auto()) @map(\"_id\") @db.ObjectId\n  email     String   @unique\n  password  String?\n  name      String\n  following String[]\n\n  images Image[]\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Image {\n  id      String @id @default(auto()) @map(\"_id\") @db.ObjectId\n  file_id String\n  url     String\n\n  userId String @db.ObjectId\n  user   User   @relation(fields: [userId], references: [id])\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n",
+  "inlineSchemaHash": "a796569127fd314b5d94a3949899353595d683ba826efc2a42bbcb551627a0cf",
   "copyEngine": true,
   "runtimeDataModel": {
     "models": {},
@@ -121,7 +121,7 @@ export interface PrismaClient<
 > {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['other'] }
 
-  $on<V extends LogOpts>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : Prisma.LogEvent) => void): PrismaClient;
+  $on<V extends (LogOpts | 'beforeExit')>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : V extends 'beforeExit' ? () => runtime.Types.Utils.JsPromise<void> : Prisma.LogEvent) => void): PrismaClient;
 
   /**
    * Connect with the database

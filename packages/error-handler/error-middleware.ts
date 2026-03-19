@@ -1,7 +1,8 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { AppError } from './index';
 
-export const errorMiddleware = (err: AppError, req: Request, res: Response) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const errorMiddleware = (err: AppError, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof AppError) {
         return res.status(err.statusCode).json({
             message: err.message,

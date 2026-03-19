@@ -110,6 +110,10 @@
     }
   },
   "dependencies": {
-    "express": "^4.21.2"
+    "@multi-vendor-ecommerce/error-handler": "*",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "swagger-ui-express": "^5.0.1"
   }
 }
