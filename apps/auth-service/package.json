@@ -123,7 +123,6 @@
   },
   "dependencies": {
     "@multi-vendor-ecommerce/error-handler": "*",
-    "@multi-vendor-ecommerce/libs": "*",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "express": "^4.21.2",
