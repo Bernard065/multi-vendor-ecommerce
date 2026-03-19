@@ -29,8 +29,7 @@
             },
             "alias": {
               "@multi-vendor-ecommerce/redis": "libs/redis/redis.ts",
-              "@multi-vendor-ecommerce/error-handler": "packages/error-handler/index.ts",
-              "@multi-vendor-ecommerce/prisma": "libs/prisma.ts"
+              "@multi-vendor-ecommerce/error-handler": "packages/error-handler/index.ts"
             },
             "external": ["mock-aws-s3", "aws-sdk", "nock", "agent-base", "https-proxy-agent"]
           }
@@ -92,8 +91,7 @@
         ],
         "options": {
           "buildTarget": "@multi-vendor-ecommerce/auth-service:build",
-          "runBuildTargetDependencies": false,
-          "dynamicImport": true
+          "runBuildTargetDependencies": false
         },
         "configurations": {
           "development": {
