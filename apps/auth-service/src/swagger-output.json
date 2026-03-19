@@ -6,17 +6,63 @@
     "version": "1.0.0"
   },
   "host": "localhost:6001",
-  "basePath": "/",
+  "basePath": "/api",
   "schemes": [
     "http"
   ],
   "paths": {
     "/user-registration": {
       "post": {
-        "description": "",
+        "summary": "Register a new user",
+        "tags": ["Auth"],
+        "description": "Register a new user and send OTP to email for verification",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": ["name", "email"],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "John Doe"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "example": "johndoe@gmail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "minLength": 8,
+                  "description": "Optional - required only if not using Google login",
+                  "example": "password123"
+                },
+                "phone_number": {
+                  "type": "string",
+                  "description": "Optional - required only for sellers",
+                  "example": "+1234567890"
+                },
+                "country": {
+                  "type": "string",
+                  "description": "Optional - required only for sellers",
+                  "example": "USA"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OTP sent to email for verification"
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "409": {
+            "description": "Email already registered"
           }
         }
       }

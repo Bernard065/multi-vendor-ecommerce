@@ -1,5 +1,5 @@
 {
-  "name": "@multi-vendor-ecommerce/prisma",
+  "name": "@multi-vendor-ecommerce/libs",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -7,6 +7,10 @@
   "types": "./prisma.ts",
   "exports": {
     ".": "./prisma.ts",
-    "./redis": "./redis.ts"
+    "./redis": "./redis/redis.ts",
+    "./prisma": "./prisma.ts"
+  },
+  "dependencies": {
+    "@upstash/redis": "^1.37.0"
   }
 }

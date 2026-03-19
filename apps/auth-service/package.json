@@ -16,7 +16,7 @@
           "format": [
             "cjs"
           ],
-          "bundle": false,
+          "bundle": true,
           "main": "apps/auth-service/src/main.ts",
           "tsConfig": "apps/auth-service/tsconfig.app.json",
           "assets": [
@@ -26,6 +26,11 @@
             "sourcemap": true,
             "outExtension": {
               ".js": ".js"
+            },
+            "alias": {
+              "@multi-vendor-ecommerce/redis": "libs/redis/redis.ts",
+              "@multi-vendor-ecommerce/error-handler": "packages/error-handler/index.ts",
+              "@multi-vendor-ecommerce/prisma": "libs/prisma.ts"
             }
           }
         },
@@ -106,11 +111,19 @@
           "build",
           "prune"
         ]
+      },
+      "swagger": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node apps/auth-service/src/swagger.js",
+          "cwd": "."
+        }
       }
     }
   },
   "dependencies": {
     "@multi-vendor-ecommerce/error-handler": "*",
+    "@multi-vendor-ecommerce/libs": "*",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "express": "^4.21.2",

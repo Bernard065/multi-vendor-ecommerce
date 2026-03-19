@@ -19,7 +19,7 @@ export const validateRegistrationData = (
 ) => {
   const { name, email, password, phone_number, country } = data;
 
-  if (!name || !email || !password || (userType === 'seller' && (!phone_number || !country))  ) {
+  if (!name || !email || (userType === 'seller' && (!phone_number || !country))  ) {
     throw new ValidationError('Missing required fields');
   }
 
@@ -27,7 +27,7 @@ export const validateRegistrationData = (
     throw new ValidationError('Invalid email format');
   }
 
-  if (!password || password.length < 8) {
+  if (password && password.length < 8) {
     throw new ValidationError('Password must be at least 8 characters long');
   }
 
@@ -60,11 +60,11 @@ export const trackOtpRequests = async (email: string) => {
   const otpRequests = parseInt(await redis.get(otpRequestKey) || '0');
 
   if (otpRequests >= 2) {
-    await redis.set(`otp_spam_lock:${email}`, 'locked', 'EX', 3600); // Lock for 1 hour
+    await redis.set(`otp_spam_lock:${email}`, 'locked', { ex: 3600 }); // Lock for 1 hour
     throw new ValidationError('Too many OTP requests. Please try again later.');
   }
 
-  await redis.set(otpRequestKey, (otpRequests + 1).toString(), 'EX', 3600); // Increment count with 1 hour expiration
+  await redis.set(otpRequestKey, (otpRequests + 1).toString(), { ex: 3600 }); // Increment count with 1 hour expiration
 
 };
 
@@ -73,7 +73,7 @@ export const sendOtp = async (email: string, name: string, template: string) => 
 
   await sendEmail(email, 'Your OTP Code', template, { name, otp });
   
-  await redis.set(`otp:${email}`, otp, 'EX', 300); // Store OTP in Redis with a 5-minute expiration
+  await redis.set(`otp:${email}`, otp, { ex: 300 }); // Store OTP in Redis with a 5-minute expiration
 
-  await redis.set(`otp_cooldown:${email}`, 'true', 'EX', 60); // Set cooldown for OTP requests (e.g., 1 minute)
+  await redis.set(`otp_cooldown:${email}`, 'true', { ex: 60 }); // Set cooldown for OTP requests (e.g., 1 minute)
 }
