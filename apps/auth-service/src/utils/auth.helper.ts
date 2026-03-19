@@ -2,6 +2,13 @@ import { ValidationError } from "@multi-vendor-ecommerce/error-handler";
 import crypto from 'crypto';
 import redis from "@multi-vendor-ecommerce/redis";
 import { sendEmail } from "./sendMail";
+import bcrypt from 'bcryptjs';
+
+const SALT_ROUNDS = 10;
+
+export const hashPassword = async (password: string): Promise<string> => {
+  return bcrypt.hash(password, SALT_ROUNDS);
+};
 
 export interface RegisterUserData {
   name: string;

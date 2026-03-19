@@ -14,7 +14,7 @@
           "platform": "node",
           "outputPath": "apps/auth-service/dist",
           "format": [
-            "cjs"
+            "esm"
           ],
           "bundle": true,
           "main": "apps/auth-service/src/main.ts",
@@ -31,7 +31,8 @@
               "@multi-vendor-ecommerce/redis": "libs/redis/redis.ts",
               "@multi-vendor-ecommerce/error-handler": "packages/error-handler/index.ts",
               "@multi-vendor-ecommerce/prisma": "libs/prisma.ts"
-            }
+            },
+            "external": ["mock-aws-s3", "aws-sdk", "nock", "agent-base", "https-proxy-agent"]
           }
         },
         "configurations": {
@@ -42,7 +43,8 @@
               "sourcemap": false,
               "outExtension": {
                 ".js": ".js"
-              }
+              },
+              "external": ["mock-aws-s3", "aws-sdk", "nock", "agent-base", "https-proxy-agent"]
             }
           }
         }
@@ -90,7 +92,8 @@
         ],
         "options": {
           "buildTarget": "@multi-vendor-ecommerce/auth-service:build",
-          "runBuildTargetDependencies": false
+          "runBuildTargetDependencies": false,
+          "dynamicImport": true
         },
         "configurations": {
           "development": {
@@ -123,6 +126,7 @@
   },
   "dependencies": {
     "@multi-vendor-ecommerce/error-handler": "*",
+    "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "express": "^4.21.2",
