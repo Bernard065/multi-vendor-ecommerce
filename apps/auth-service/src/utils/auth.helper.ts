@@ -3,13 +3,8 @@ import crypto from 'crypto';
 import redis from "@multi-vendor-ecommerce/redis";
 import { sendEmail } from "./sendMail";
 import bcrypt from 'bcryptjs';
-import { NextFunction } from "express";
-
-const SALT_ROUNDS = 10;
-
-export const hashPassword = async (password: string): Promise<string> => {
-  return bcrypt.hash(password, SALT_ROUNDS);
-};
+import { Request, Response, NextFunction } from "express";
+import { prisma } from "@multi-vendor-ecommerce/prisma";
 
 export interface RegisterUserData {
   name: string;
@@ -18,6 +13,16 @@ export interface RegisterUserData {
   phone_number?: string;
   country?: string;
 }
+
+interface ForgotPasswordBody {
+  email?: string;
+}
+
+const SALT_ROUNDS = 10;
+
+export const hashPassword = async (password: string): Promise<string> => {
+  return bcrypt.hash(password, SALT_ROUNDS);
+};
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -112,4 +117,50 @@ export const verifyOtp = async (email: string, otp: string, next: NextFunction) 
   }
 
   await redis.del(`otp:${email}`, failedAttemptsKey); // Clear OTP and failed attempts on successful verification
+}
+
+export const handleForgotPassword = async (req: Request<unknown, unknown, ForgotPasswordBody>, res: Response, next: NextFunction, userType: 'user' | 'seller') => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      throw new ValidationError('Email is required');
+    }
+
+    // Find user based on user type
+    const user = userType === 'user' && await prisma.user.findUnique({ where: { email } })
+
+    if (!user) {
+      throw new ValidationError('No account found with that email');
+    }
+    // Check otp restrictions
+    await checkOtpRestrictions(email);
+    // Track otp requests
+    await trackOtpRequests(email);
+
+    // Generate and send OTP
+    await sendOtp(email, user.name, 'forgot-password-user-mail');
+
+    res.status(200).json({ message: 'OTP sent to email. Please verify your account.' });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+export const verifyForgotPasswordOtp = async(req: Request, resp: Response, next:NextFunction)=> {
+  try {
+    const { email, otp } = req.body;
+
+    if (!email || !otp) {
+      throw new ValidationError('Email and OTP required!')
+    }
+
+    await verifyOtp(email, otp, next)
+
+    resp.status(200).json({
+      message: 'OTP verified. You can now reset your password!'
+    })
+  } catch (error) {
+    return next(error);
+  }
 }
