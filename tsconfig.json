@@ -20,6 +20,9 @@
     },
     {
       "path": "./libs"
+    },
+    {
+      "path": "./apps/multi-vendor"
     }
   ]
 }

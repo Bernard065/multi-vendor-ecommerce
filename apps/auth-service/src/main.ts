@@ -13,8 +13,8 @@ app.use(
     origin: ['http://localhost:3000'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
-  }),
-)
+  })
+);
 
 app.use(express.json());
 app.use(cookieParser());
@@ -26,10 +26,10 @@ app.get('/', (req, res) => {
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.get('/docs-json', (req, res) => {
   res.json(swaggerDocument);
-}); 
+});
 
 // Routes
-app.use('/api', router)
+app.use('/api', router);
 
 // Error handling middleware
 app.use(errorMiddleware);

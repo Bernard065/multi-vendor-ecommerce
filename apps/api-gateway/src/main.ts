@@ -9,11 +9,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: ['http://localhost:3000'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   })
-)
+);
 
 app.use(morgan('dev'));
 app.use(express.json({ limit: '10mb' }));

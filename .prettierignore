@@ -3,3 +3,4 @@
 /coverage
 /.nx/cache
 /.nx/workspace-data
+apps/multi-vendor/next-env.d.ts
