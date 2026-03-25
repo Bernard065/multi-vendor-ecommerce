@@ -1,6 +1,7 @@
 import Header from '../shared/widgets/header/header';
 import './global.css';
 import { Roboto, Poppins } from 'next/font/google';
+import Providers from './providers';
 
 export const metadata = {
   title: 'Welcome to multi-vendor',
@@ -21,11 +22,12 @@ const poppins = Poppins({
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body className={`${roboto.variable} ${poppins.variable}`}>
-        <Header />
-
-        {children}
+        <Providers>
+          <Header />
+          {children}
+        </Providers>
       </body>
     </html>
   );

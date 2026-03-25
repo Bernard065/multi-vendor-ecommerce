@@ -69,7 +69,7 @@ export const trackOtpRequests = async (email: string) => {
   const otpRequestKey = `otp_request_count:${email}`;
   const otpRequests = parseInt((await redis.get(otpRequestKey)) || '0');
 
-  if (otpRequests >= 2) {
+  if (otpRequests >= 3) {
     await redis.set(`otp_spam_lock:${email}`, 'locked', { ex: 3600 }); // Lock for 1 hour
     throw new ValidationError('Too many OTP requests. Please try again later.');
   }
@@ -100,7 +100,7 @@ export const verifyOtp = async (email: string, otp: string, next: NextFunction) 
 
   // Compare as strings to handle type mismatch (Redis returns number, user sends string)
   if (String(storedOtp).trim() !== String(otp).trim()) {
-    if (failedAttempts >= 2) {
+    if (failedAttempts >= 3) {
       await redis.set(`otp_lock:${email}`, 'locked', { ex: 1800 }); // Lock for 30 minutes
       await redis.del(`otp:${email}`, failedAttemptsKey); // Clear OTP and failed attempts
 
@@ -140,7 +140,7 @@ export const handleForgotPassword = async (
     await trackOtpRequests(email);
 
     // Generate and send OTP
-    await sendOtp(email, user.name, 'forgot-password-user-mail');
+    await sendOtp(email, user.name, 'forgot-password-user-email');
 
     res.status(200).json({ message: 'OTP sent to email. Please verify your account.' });
   } catch (error) {
