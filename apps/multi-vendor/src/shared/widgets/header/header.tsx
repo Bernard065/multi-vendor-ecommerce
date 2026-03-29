@@ -1,9 +1,14 @@
+'use client';
+
 import Link from 'next/link';
 import React from 'react';
 import { HeartIcon, Search, ShoppingCartIcon, User } from 'lucide-react';
 import HeaderBottom from './header-bottom';
+import useUser from '../../../hooks/useUser';
 
 const Header = () => {
+  const { user, isLoading, isError } = useUser();
+
   return (
     <div className="w-full bg-white">
       <div className="m-auto flex w-[80%] items-center justify-between py-5">
@@ -33,7 +38,9 @@ const Header = () => {
 
             <Link href={'/login'}>
               <span className="block font-medium">Hello,</span>
-              <span className="font-semibold">Sign In</span>
+              <span className="font-semibold">
+                {isLoading ? 'Loading...' : user ? user.name.split(' ')[0] : 'Sign In'}
+              </span>
             </Link>
           </div>
 

@@ -27,6 +27,9 @@
     },
     {
       "path": "../../libs"
+    },
+    {
+      "path": "../../packages/middleware"
     }
   ]
 }

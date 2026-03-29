@@ -20,6 +20,7 @@
     "customConditions": ["@multi-vendor-ecommerce/source"],
     "paths": {
       "@multi-vendor-ecommerce/error-handler": ["packages/error-handler/index.ts"],
+      "@multi-vendor-ecommerce/middleware": ["packages/middleware/index.ts"],
       "@multi-vendor-ecommerce/prisma": ["libs/prisma.ts"],
       "@multi-vendor-ecommerce/redis": ["libs/redis/redis.ts"]
     }

@@ -4,8 +4,10 @@ import { navItems, NavItemsTypes } from '../../../configs/constants';
 import { AlignLeft, ChevronDown, HeartIcon, ShoppingCartIcon, User } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import useUser from '../../../hooks/useUser';
 
 const HeaderBottom = () => {
+  const { user, isLoading } = useUser();
   const [show, setShow] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
 
@@ -70,7 +72,9 @@ const HeaderBottom = () => {
 
                 <Link href={'/login'}>
                   <span className="block font-medium">Hello,</span>
-                  <span className="font-semibold">Sign In</span>
+                  <span className="font-semibold">
+                    {isLoading ? 'Loading...' : user ? user.name.split(' ')[0] : 'Sign In'}
+                  </span>
                 </Link>
               </div>
 

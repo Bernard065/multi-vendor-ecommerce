@@ -12,10 +12,20 @@ import {
   handleForgotPassword,
   verifyForgotPasswordOtp,
 } from '../utils/auth.helper';
-import { ValidationError } from '@multi-vendor-ecommerce/error-handler';
+import { AuthenticationError, ValidationError } from '@multi-vendor-ecommerce/error-handler';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { setCookie } from '../utils/cookies/setCookie';
+
+// Extend Express Request to include user property from auth middleware
+interface AuthenticatedRequest extends Request {
+  user?: {
+    id: string;
+    email: string;
+    name: string | null;
+    password?: string;
+  };
+}
 
 // Register a new user - store temp data and send OTP
 export const userRegistration = async (req: Request, res: Response, next: NextFunction) => {
@@ -153,6 +163,61 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
       message: 'Login successful',
       accessToken,
       refreshToken,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+// Refresh token user
+export const refreshToken = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+      return new ValidationError('Unauthorized! No refresh token.');
+    }
+
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string) as {
+      userId: string;
+      role: string;
+    };
+
+    if (!decoded || !decoded.userId || !decoded.role) {
+      return new AuthenticationError('Forbidden! Invalid refresh token.');
+    }
+
+    const user = await prisma.user.findUnique({ where: { id: decoded.userId } });
+
+    if (!user) {
+      return new AuthenticationError('Forbidden! Account not found');
+    }
+
+    const newAccessToken = jwt.sign(
+      {
+        userId: decoded.userId,
+        role: decoded.role,
+      },
+      process.env.ACCESS_TOKEN_SECRET as string,
+      { expiresIn: '15m' }
+    );
+
+    setCookie(res, 'accessToken', newAccessToken);
+
+    return res.status(201).json({ success: true });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+// Get logged in user
+export const getUser = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const user = req.user;
+
+    return res.status(201).json({
+      success: true,
+      user,
     });
   } catch (error) {
     return next(error);

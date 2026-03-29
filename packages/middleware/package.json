@@ -1,0 +1,11 @@
+{
+  "name": "@multi-vendor-ecommerce/middleware",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./isAuthenticated.ts",
+  "types": "./isAuthenticated.ts",
+  "exports": {
+    ".": "./isAuthenticated.ts"
+  }
+}

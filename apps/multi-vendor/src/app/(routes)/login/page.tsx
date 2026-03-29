@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 
 type FormData = {
@@ -24,6 +24,7 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
 
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -47,6 +48,8 @@ const Login = () => {
 
     onSuccess: () => {
       setServerError(null);
+      // Invalidate user query to force refetch with new session
+      queryClient.invalidateQueries({ queryKey: ['user'] });
       router.push('/');
     },
 
