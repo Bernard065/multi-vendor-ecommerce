@@ -7,7 +7,7 @@ import HeaderBottom from './header-bottom';
 import useUser from '../../../hooks/useUser';
 
 const Header = () => {
-  const { user, isLoading, isError } = useUser();
+  const { user, isLoading } = useUser();
 
   return (
     <div className="w-full bg-white">

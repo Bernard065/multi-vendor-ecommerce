@@ -26,6 +26,9 @@
     },
     {
       "path": "./apps/multi-vendor"
+    },
+    {
+      "path": "./apps/seller-ui"
     }
   ]
 }

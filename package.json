@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "npx nx run-many --target=serve --all",
     "ui": "npx nx dev multi-vendor",
+    "seller-ui": "npx nx dev seller-ui",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "nx run-many --target=lint --all",
