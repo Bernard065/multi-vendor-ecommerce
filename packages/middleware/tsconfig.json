@@ -8,7 +8,7 @@
     "outDir": "dist",
     "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
   },
-  "include": ["isAuthenticated.ts", "index.ts"],
+  "include": ["isAuthenticated.ts", "index.ts", "authorizeRoles.ts"],
   "exclude": ["node_modules", "dist"],
   "references": [
     {

@@ -22,6 +22,10 @@
       "@multi-vendor-ecommerce/error-handler": ["packages/error-handler/index.ts"],
       "@multi-vendor-ecommerce/middleware": ["packages/middleware/index.ts"],
       "@multi-vendor-ecommerce/prisma": ["libs/prisma.ts"],
+      "@multi-vendor-ecommerce/prisma/client": ["libs/generated/prisma/client.ts"],
+      "@multi-vendor-ecommerce/prisma/generated/prisma/client": ["libs/generated/prisma/client.ts"],
+      "@multi-vendor-ecommerce/libs": ["libs/prisma.ts"],
+      "@multi-vendor-ecommerce/libs/generated/prisma/client": ["libs/generated/prisma/client.ts"],
       "@multi-vendor-ecommerce/redis": ["libs/redis/redis.ts"]
     }
   }

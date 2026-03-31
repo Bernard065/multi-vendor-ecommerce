@@ -28,6 +28,8 @@ export type ImageMinAggregateOutputType = {
   file_id: string | null;
   url: string | null;
   userId: string | null;
+  shopId: string | null;
+  productId: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
 };
@@ -37,6 +39,8 @@ export type ImageMaxAggregateOutputType = {
   file_id: string | null;
   url: string | null;
   userId: string | null;
+  shopId: string | null;
+  productId: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
 };
@@ -46,6 +50,8 @@ export type ImageCountAggregateOutputType = {
   file_id: number;
   url: number;
   userId: number;
+  shopId: number;
+  productId: number;
   createdAt: number;
   updatedAt: number;
   _all: number;
@@ -56,6 +62,8 @@ export type ImageMinAggregateInputType = {
   file_id?: true;
   url?: true;
   userId?: true;
+  shopId?: true;
+  productId?: true;
   createdAt?: true;
   updatedAt?: true;
 };
@@ -65,6 +73,8 @@ export type ImageMaxAggregateInputType = {
   file_id?: true;
   url?: true;
   userId?: true;
+  shopId?: true;
+  productId?: true;
   createdAt?: true;
   updatedAt?: true;
 };
@@ -74,6 +84,8 @@ export type ImageCountAggregateInputType = {
   file_id?: true;
   url?: true;
   userId?: true;
+  shopId?: true;
+  productId?: true;
   createdAt?: true;
   updatedAt?: true;
   _all?: true;
@@ -157,6 +169,8 @@ export type ImageGroupByOutputType = {
   file_id: string;
   url: string;
   userId: string;
+  shopId: string | null;
+  productId: string | null;
   createdAt: Date;
   updatedAt: Date;
   _count: ImageCountAggregateOutputType | null;
@@ -184,9 +198,13 @@ export type ImageWhereInput = {
   file_id?: Prisma.StringFilter<'Image'> | string;
   url?: Prisma.StringFilter<'Image'> | string;
   userId?: Prisma.StringFilter<'Image'> | string;
+  shopId?: Prisma.StringNullableFilter<'Image'> | string | null;
+  productId?: Prisma.StringNullableFilter<'Image'> | string | null;
   createdAt?: Prisma.DateTimeFilter<'Image'> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<'Image'> | Date | string;
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
+  shop?: Prisma.XOR<Prisma.ShopNullableScalarRelationFilter, Prisma.ShopWhereInput> | null;
+  product?: Prisma.XOR<Prisma.ProductNullableScalarRelationFilter, Prisma.ProductWhereInput> | null;
 };
 
 export type ImageOrderByWithRelationInput = {
@@ -194,9 +212,13 @@ export type ImageOrderByWithRelationInput = {
   file_id?: Prisma.SortOrder;
   url?: Prisma.SortOrder;
   userId?: Prisma.SortOrder;
+  shopId?: Prisma.SortOrder;
+  productId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
   user?: Prisma.UserOrderByWithRelationInput;
+  shop?: Prisma.ShopOrderByWithRelationInput;
+  product?: Prisma.ProductOrderByWithRelationInput;
 };
 
 export type ImageWhereUniqueInput = Prisma.AtLeast<
@@ -208,9 +230,16 @@ export type ImageWhereUniqueInput = Prisma.AtLeast<
     file_id?: Prisma.StringFilter<'Image'> | string;
     url?: Prisma.StringFilter<'Image'> | string;
     userId?: Prisma.StringFilter<'Image'> | string;
+    shopId?: Prisma.StringNullableFilter<'Image'> | string | null;
+    productId?: Prisma.StringNullableFilter<'Image'> | string | null;
     createdAt?: Prisma.DateTimeFilter<'Image'> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<'Image'> | Date | string;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
+    shop?: Prisma.XOR<Prisma.ShopNullableScalarRelationFilter, Prisma.ShopWhereInput> | null;
+    product?: Prisma.XOR<
+      Prisma.ProductNullableScalarRelationFilter,
+      Prisma.ProductWhereInput
+    > | null;
   },
   'id'
 >;
@@ -220,6 +249,8 @@ export type ImageOrderByWithAggregationInput = {
   file_id?: Prisma.SortOrder;
   url?: Prisma.SortOrder;
   userId?: Prisma.SortOrder;
+  shopId?: Prisma.SortOrder;
+  productId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
   _count?: Prisma.ImageCountOrderByAggregateInput;
@@ -235,6 +266,8 @@ export type ImageScalarWhereWithAggregatesInput = {
   file_id?: Prisma.StringWithAggregatesFilter<'Image'> | string;
   url?: Prisma.StringWithAggregatesFilter<'Image'> | string;
   userId?: Prisma.StringWithAggregatesFilter<'Image'> | string;
+  shopId?: Prisma.StringNullableWithAggregatesFilter<'Image'> | string | null;
+  productId?: Prisma.StringNullableWithAggregatesFilter<'Image'> | string | null;
   createdAt?: Prisma.DateTimeWithAggregatesFilter<'Image'> | Date | string;
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<'Image'> | Date | string;
 };
@@ -246,6 +279,8 @@ export type ImageCreateInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   user: Prisma.UserCreateNestedOneWithoutImagesInput;
+  shop?: Prisma.ShopCreateNestedOneWithoutImagesInput;
+  product?: Prisma.ProductCreateNestedOneWithoutImagesInput;
 };
 
 export type ImageUncheckedCreateInput = {
@@ -253,6 +288,8 @@ export type ImageUncheckedCreateInput = {
   file_id: string;
   url: string;
   userId: string;
+  shopId?: string | null;
+  productId?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 };
@@ -263,12 +300,16 @@ export type ImageUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   user?: Prisma.UserUpdateOneRequiredWithoutImagesNestedInput;
+  shop?: Prisma.ShopUpdateOneWithoutImagesNestedInput;
+  product?: Prisma.ProductUpdateOneWithoutImagesNestedInput;
 };
 
 export type ImageUncheckedUpdateInput = {
   file_id?: Prisma.StringFieldUpdateOperationsInput | string;
   url?: Prisma.StringFieldUpdateOperationsInput | string;
   userId?: Prisma.StringFieldUpdateOperationsInput | string;
+  shopId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -278,6 +319,8 @@ export type ImageCreateManyInput = {
   file_id: string;
   url: string;
   userId: string;
+  shopId?: string | null;
+  productId?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 };
@@ -293,6 +336,8 @@ export type ImageUncheckedUpdateManyInput = {
   file_id?: Prisma.StringFieldUpdateOperationsInput | string;
   url?: Prisma.StringFieldUpdateOperationsInput | string;
   userId?: Prisma.StringFieldUpdateOperationsInput | string;
+  shopId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -312,6 +357,8 @@ export type ImageCountOrderByAggregateInput = {
   file_id?: Prisma.SortOrder;
   url?: Prisma.SortOrder;
   userId?: Prisma.SortOrder;
+  shopId?: Prisma.SortOrder;
+  productId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
 };
@@ -321,6 +368,8 @@ export type ImageMaxOrderByAggregateInput = {
   file_id?: Prisma.SortOrder;
   url?: Prisma.SortOrder;
   userId?: Prisma.SortOrder;
+  shopId?: Prisma.SortOrder;
+  productId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
 };
@@ -330,6 +379,8 @@ export type ImageMinOrderByAggregateInput = {
   file_id?: Prisma.SortOrder;
   url?: Prisma.SortOrder;
   userId?: Prisma.SortOrder;
+  shopId?: Prisma.SortOrder;
+  productId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
 };
@@ -408,18 +459,182 @@ export type ImageUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.ImageScalarWhereInput | Prisma.ImageScalarWhereInput[];
 };
 
+export type ImageCreateNestedManyWithoutShopInput = {
+  create?:
+    | Prisma.XOR<Prisma.ImageCreateWithoutShopInput, Prisma.ImageUncheckedCreateWithoutShopInput>
+    | Prisma.ImageCreateWithoutShopInput[]
+    | Prisma.ImageUncheckedCreateWithoutShopInput[];
+  connectOrCreate?:
+    | Prisma.ImageCreateOrConnectWithoutShopInput
+    | Prisma.ImageCreateOrConnectWithoutShopInput[];
+  createMany?: Prisma.ImageCreateManyShopInputEnvelope;
+  connect?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+};
+
+export type ImageUncheckedCreateNestedManyWithoutShopInput = {
+  create?:
+    | Prisma.XOR<Prisma.ImageCreateWithoutShopInput, Prisma.ImageUncheckedCreateWithoutShopInput>
+    | Prisma.ImageCreateWithoutShopInput[]
+    | Prisma.ImageUncheckedCreateWithoutShopInput[];
+  connectOrCreate?:
+    | Prisma.ImageCreateOrConnectWithoutShopInput
+    | Prisma.ImageCreateOrConnectWithoutShopInput[];
+  createMany?: Prisma.ImageCreateManyShopInputEnvelope;
+  connect?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+};
+
+export type ImageUpdateManyWithoutShopNestedInput = {
+  create?:
+    | Prisma.XOR<Prisma.ImageCreateWithoutShopInput, Prisma.ImageUncheckedCreateWithoutShopInput>
+    | Prisma.ImageCreateWithoutShopInput[]
+    | Prisma.ImageUncheckedCreateWithoutShopInput[];
+  connectOrCreate?:
+    | Prisma.ImageCreateOrConnectWithoutShopInput
+    | Prisma.ImageCreateOrConnectWithoutShopInput[];
+  upsert?:
+    | Prisma.ImageUpsertWithWhereUniqueWithoutShopInput
+    | Prisma.ImageUpsertWithWhereUniqueWithoutShopInput[];
+  createMany?: Prisma.ImageCreateManyShopInputEnvelope;
+  set?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+  disconnect?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+  delete?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+  connect?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+  update?:
+    | Prisma.ImageUpdateWithWhereUniqueWithoutShopInput
+    | Prisma.ImageUpdateWithWhereUniqueWithoutShopInput[];
+  updateMany?:
+    | Prisma.ImageUpdateManyWithWhereWithoutShopInput
+    | Prisma.ImageUpdateManyWithWhereWithoutShopInput[];
+  deleteMany?: Prisma.ImageScalarWhereInput | Prisma.ImageScalarWhereInput[];
+};
+
+export type ImageUncheckedUpdateManyWithoutShopNestedInput = {
+  create?:
+    | Prisma.XOR<Prisma.ImageCreateWithoutShopInput, Prisma.ImageUncheckedCreateWithoutShopInput>
+    | Prisma.ImageCreateWithoutShopInput[]
+    | Prisma.ImageUncheckedCreateWithoutShopInput[];
+  connectOrCreate?:
+    | Prisma.ImageCreateOrConnectWithoutShopInput
+    | Prisma.ImageCreateOrConnectWithoutShopInput[];
+  upsert?:
+    | Prisma.ImageUpsertWithWhereUniqueWithoutShopInput
+    | Prisma.ImageUpsertWithWhereUniqueWithoutShopInput[];
+  createMany?: Prisma.ImageCreateManyShopInputEnvelope;
+  set?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+  disconnect?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+  delete?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+  connect?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+  update?:
+    | Prisma.ImageUpdateWithWhereUniqueWithoutShopInput
+    | Prisma.ImageUpdateWithWhereUniqueWithoutShopInput[];
+  updateMany?:
+    | Prisma.ImageUpdateManyWithWhereWithoutShopInput
+    | Prisma.ImageUpdateManyWithWhereWithoutShopInput[];
+  deleteMany?: Prisma.ImageScalarWhereInput | Prisma.ImageScalarWhereInput[];
+};
+
+export type ImageCreateNestedManyWithoutProductInput = {
+  create?:
+    | Prisma.XOR<
+        Prisma.ImageCreateWithoutProductInput,
+        Prisma.ImageUncheckedCreateWithoutProductInput
+      >
+    | Prisma.ImageCreateWithoutProductInput[]
+    | Prisma.ImageUncheckedCreateWithoutProductInput[];
+  connectOrCreate?:
+    | Prisma.ImageCreateOrConnectWithoutProductInput
+    | Prisma.ImageCreateOrConnectWithoutProductInput[];
+  createMany?: Prisma.ImageCreateManyProductInputEnvelope;
+  connect?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+};
+
+export type ImageUncheckedCreateNestedManyWithoutProductInput = {
+  create?:
+    | Prisma.XOR<
+        Prisma.ImageCreateWithoutProductInput,
+        Prisma.ImageUncheckedCreateWithoutProductInput
+      >
+    | Prisma.ImageCreateWithoutProductInput[]
+    | Prisma.ImageUncheckedCreateWithoutProductInput[];
+  connectOrCreate?:
+    | Prisma.ImageCreateOrConnectWithoutProductInput
+    | Prisma.ImageCreateOrConnectWithoutProductInput[];
+  createMany?: Prisma.ImageCreateManyProductInputEnvelope;
+  connect?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+};
+
+export type ImageUpdateManyWithoutProductNestedInput = {
+  create?:
+    | Prisma.XOR<
+        Prisma.ImageCreateWithoutProductInput,
+        Prisma.ImageUncheckedCreateWithoutProductInput
+      >
+    | Prisma.ImageCreateWithoutProductInput[]
+    | Prisma.ImageUncheckedCreateWithoutProductInput[];
+  connectOrCreate?:
+    | Prisma.ImageCreateOrConnectWithoutProductInput
+    | Prisma.ImageCreateOrConnectWithoutProductInput[];
+  upsert?:
+    | Prisma.ImageUpsertWithWhereUniqueWithoutProductInput
+    | Prisma.ImageUpsertWithWhereUniqueWithoutProductInput[];
+  createMany?: Prisma.ImageCreateManyProductInputEnvelope;
+  set?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+  disconnect?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+  delete?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+  connect?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+  update?:
+    | Prisma.ImageUpdateWithWhereUniqueWithoutProductInput
+    | Prisma.ImageUpdateWithWhereUniqueWithoutProductInput[];
+  updateMany?:
+    | Prisma.ImageUpdateManyWithWhereWithoutProductInput
+    | Prisma.ImageUpdateManyWithWhereWithoutProductInput[];
+  deleteMany?: Prisma.ImageScalarWhereInput | Prisma.ImageScalarWhereInput[];
+};
+
+export type ImageUncheckedUpdateManyWithoutProductNestedInput = {
+  create?:
+    | Prisma.XOR<
+        Prisma.ImageCreateWithoutProductInput,
+        Prisma.ImageUncheckedCreateWithoutProductInput
+      >
+    | Prisma.ImageCreateWithoutProductInput[]
+    | Prisma.ImageUncheckedCreateWithoutProductInput[];
+  connectOrCreate?:
+    | Prisma.ImageCreateOrConnectWithoutProductInput
+    | Prisma.ImageCreateOrConnectWithoutProductInput[];
+  upsert?:
+    | Prisma.ImageUpsertWithWhereUniqueWithoutProductInput
+    | Prisma.ImageUpsertWithWhereUniqueWithoutProductInput[];
+  createMany?: Prisma.ImageCreateManyProductInputEnvelope;
+  set?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+  disconnect?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+  delete?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+  connect?: Prisma.ImageWhereUniqueInput | Prisma.ImageWhereUniqueInput[];
+  update?:
+    | Prisma.ImageUpdateWithWhereUniqueWithoutProductInput
+    | Prisma.ImageUpdateWithWhereUniqueWithoutProductInput[];
+  updateMany?:
+    | Prisma.ImageUpdateManyWithWhereWithoutProductInput
+    | Prisma.ImageUpdateManyWithWhereWithoutProductInput[];
+  deleteMany?: Prisma.ImageScalarWhereInput | Prisma.ImageScalarWhereInput[];
+};
+
 export type ImageCreateWithoutUserInput = {
   id?: string;
   file_id: string;
   url: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  shop?: Prisma.ShopCreateNestedOneWithoutImagesInput;
+  product?: Prisma.ProductCreateNestedOneWithoutImagesInput;
 };
 
 export type ImageUncheckedCreateWithoutUserInput = {
   id?: string;
   file_id: string;
   url: string;
+  shopId?: string | null;
+  productId?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 };
@@ -469,14 +684,135 @@ export type ImageScalarWhereInput = {
   file_id?: Prisma.StringFilter<'Image'> | string;
   url?: Prisma.StringFilter<'Image'> | string;
   userId?: Prisma.StringFilter<'Image'> | string;
+  shopId?: Prisma.StringNullableFilter<'Image'> | string | null;
+  productId?: Prisma.StringNullableFilter<'Image'> | string | null;
   createdAt?: Prisma.DateTimeFilter<'Image'> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<'Image'> | Date | string;
+};
+
+export type ImageCreateWithoutShopInput = {
+  id?: string;
+  file_id: string;
+  url: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  user: Prisma.UserCreateNestedOneWithoutImagesInput;
+  product?: Prisma.ProductCreateNestedOneWithoutImagesInput;
+};
+
+export type ImageUncheckedCreateWithoutShopInput = {
+  id?: string;
+  file_id: string;
+  url: string;
+  userId: string;
+  productId?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+};
+
+export type ImageCreateOrConnectWithoutShopInput = {
+  where: Prisma.ImageWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.ImageCreateWithoutShopInput,
+    Prisma.ImageUncheckedCreateWithoutShopInput
+  >;
+};
+
+export type ImageCreateManyShopInputEnvelope = {
+  data: Prisma.ImageCreateManyShopInput | Prisma.ImageCreateManyShopInput[];
+};
+
+export type ImageUpsertWithWhereUniqueWithoutShopInput = {
+  where: Prisma.ImageWhereUniqueInput;
+  update: Prisma.XOR<
+    Prisma.ImageUpdateWithoutShopInput,
+    Prisma.ImageUncheckedUpdateWithoutShopInput
+  >;
+  create: Prisma.XOR<
+    Prisma.ImageCreateWithoutShopInput,
+    Prisma.ImageUncheckedCreateWithoutShopInput
+  >;
+};
+
+export type ImageUpdateWithWhereUniqueWithoutShopInput = {
+  where: Prisma.ImageWhereUniqueInput;
+  data: Prisma.XOR<Prisma.ImageUpdateWithoutShopInput, Prisma.ImageUncheckedUpdateWithoutShopInput>;
+};
+
+export type ImageUpdateManyWithWhereWithoutShopInput = {
+  where: Prisma.ImageScalarWhereInput;
+  data: Prisma.XOR<
+    Prisma.ImageUpdateManyMutationInput,
+    Prisma.ImageUncheckedUpdateManyWithoutShopInput
+  >;
+};
+
+export type ImageCreateWithoutProductInput = {
+  id?: string;
+  file_id: string;
+  url: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  user: Prisma.UserCreateNestedOneWithoutImagesInput;
+  shop?: Prisma.ShopCreateNestedOneWithoutImagesInput;
+};
+
+export type ImageUncheckedCreateWithoutProductInput = {
+  id?: string;
+  file_id: string;
+  url: string;
+  userId: string;
+  shopId?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+};
+
+export type ImageCreateOrConnectWithoutProductInput = {
+  where: Prisma.ImageWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.ImageCreateWithoutProductInput,
+    Prisma.ImageUncheckedCreateWithoutProductInput
+  >;
+};
+
+export type ImageCreateManyProductInputEnvelope = {
+  data: Prisma.ImageCreateManyProductInput | Prisma.ImageCreateManyProductInput[];
+};
+
+export type ImageUpsertWithWhereUniqueWithoutProductInput = {
+  where: Prisma.ImageWhereUniqueInput;
+  update: Prisma.XOR<
+    Prisma.ImageUpdateWithoutProductInput,
+    Prisma.ImageUncheckedUpdateWithoutProductInput
+  >;
+  create: Prisma.XOR<
+    Prisma.ImageCreateWithoutProductInput,
+    Prisma.ImageUncheckedCreateWithoutProductInput
+  >;
+};
+
+export type ImageUpdateWithWhereUniqueWithoutProductInput = {
+  where: Prisma.ImageWhereUniqueInput;
+  data: Prisma.XOR<
+    Prisma.ImageUpdateWithoutProductInput,
+    Prisma.ImageUncheckedUpdateWithoutProductInput
+  >;
+};
+
+export type ImageUpdateManyWithWhereWithoutProductInput = {
+  where: Prisma.ImageScalarWhereInput;
+  data: Prisma.XOR<
+    Prisma.ImageUpdateManyMutationInput,
+    Prisma.ImageUncheckedUpdateManyWithoutProductInput
+  >;
 };
 
 export type ImageCreateManyUserInput = {
   id?: string;
   file_id: string;
   url: string;
+  shopId?: string | null;
+  productId?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 };
@@ -486,11 +822,15 @@ export type ImageUpdateWithoutUserInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  shop?: Prisma.ShopUpdateOneWithoutImagesNestedInput;
+  product?: Prisma.ProductUpdateOneWithoutImagesNestedInput;
 };
 
 export type ImageUncheckedUpdateWithoutUserInput = {
   file_id?: Prisma.StringFieldUpdateOperationsInput | string;
   url?: Prisma.StringFieldUpdateOperationsInput | string;
+  shopId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -498,6 +838,82 @@ export type ImageUncheckedUpdateWithoutUserInput = {
 export type ImageUncheckedUpdateManyWithoutUserInput = {
   file_id?: Prisma.StringFieldUpdateOperationsInput | string;
   url?: Prisma.StringFieldUpdateOperationsInput | string;
+  shopId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+
+export type ImageCreateManyShopInput = {
+  id?: string;
+  file_id: string;
+  url: string;
+  userId: string;
+  productId?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+};
+
+export type ImageUpdateWithoutShopInput = {
+  file_id?: Prisma.StringFieldUpdateOperationsInput | string;
+  url?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  user?: Prisma.UserUpdateOneRequiredWithoutImagesNestedInput;
+  product?: Prisma.ProductUpdateOneWithoutImagesNestedInput;
+};
+
+export type ImageUncheckedUpdateWithoutShopInput = {
+  file_id?: Prisma.StringFieldUpdateOperationsInput | string;
+  url?: Prisma.StringFieldUpdateOperationsInput | string;
+  userId?: Prisma.StringFieldUpdateOperationsInput | string;
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+
+export type ImageUncheckedUpdateManyWithoutShopInput = {
+  file_id?: Prisma.StringFieldUpdateOperationsInput | string;
+  url?: Prisma.StringFieldUpdateOperationsInput | string;
+  userId?: Prisma.StringFieldUpdateOperationsInput | string;
+  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+
+export type ImageCreateManyProductInput = {
+  id?: string;
+  file_id: string;
+  url: string;
+  userId: string;
+  shopId?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+};
+
+export type ImageUpdateWithoutProductInput = {
+  file_id?: Prisma.StringFieldUpdateOperationsInput | string;
+  url?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  user?: Prisma.UserUpdateOneRequiredWithoutImagesNestedInput;
+  shop?: Prisma.ShopUpdateOneWithoutImagesNestedInput;
+};
+
+export type ImageUncheckedUpdateWithoutProductInput = {
+  file_id?: Prisma.StringFieldUpdateOperationsInput | string;
+  url?: Prisma.StringFieldUpdateOperationsInput | string;
+  userId?: Prisma.StringFieldUpdateOperationsInput | string;
+  shopId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+
+export type ImageUncheckedUpdateManyWithoutProductInput = {
+  file_id?: Prisma.StringFieldUpdateOperationsInput | string;
+  url?: Prisma.StringFieldUpdateOperationsInput | string;
+  userId?: Prisma.StringFieldUpdateOperationsInput | string;
+  shopId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -510,9 +926,13 @@ export type ImageSelect<
     file_id?: boolean;
     url?: boolean;
     userId?: boolean;
+    shopId?: boolean;
+    productId?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    shop?: boolean | Prisma.Image$shopArgs<ExtArgs>;
+    product?: boolean | Prisma.Image$productArgs<ExtArgs>;
   },
   ExtArgs['result']['image']
 >;
@@ -522,6 +942,8 @@ export type ImageSelectScalar = {
   file_id?: boolean;
   url?: boolean;
   userId?: boolean;
+  shopId?: boolean;
+  productId?: boolean;
   createdAt?: boolean;
   updatedAt?: boolean;
 };
@@ -529,13 +951,15 @@ export type ImageSelectScalar = {
 export type ImageOmit<
   ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetOmit<
-  'id' | 'file_id' | 'url' | 'userId' | 'createdAt' | 'updatedAt',
+  'id' | 'file_id' | 'url' | 'userId' | 'shopId' | 'productId' | 'createdAt' | 'updatedAt',
   ExtArgs['result']['image']
 >;
 export type ImageInclude<
   ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+  shop?: boolean | Prisma.Image$shopArgs<ExtArgs>;
+  product?: boolean | Prisma.Image$productArgs<ExtArgs>;
 };
 
 export type $ImagePayload<
@@ -544,6 +968,8 @@ export type $ImagePayload<
   name: 'Image';
   objects: {
     user: Prisma.$UserPayload<ExtArgs>;
+    shop: Prisma.$ShopPayload<ExtArgs> | null;
+    product: Prisma.$ProductPayload<ExtArgs> | null;
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
@@ -551,6 +977,8 @@ export type $ImagePayload<
       file_id: string;
       url: string;
       userId: string;
+      shopId: string | null;
+      productId: string | null;
       createdAt: Date;
       updatedAt: Date;
     },
@@ -1028,6 +1456,32 @@ export interface Prisma__ImageClient<
     ExtArgs,
     GlobalOmitOptions
   >;
+  shop<T extends Prisma.Image$shopArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Image$shopArgs<ExtArgs>>
+  ): Prisma.Prisma__ShopClient<
+    runtime.Types.Result.GetResult<
+      Prisma.$ShopPayload<ExtArgs>,
+      T,
+      'findUniqueOrThrow',
+      GlobalOmitOptions
+    > | null,
+    null,
+    ExtArgs,
+    GlobalOmitOptions
+  >;
+  product<T extends Prisma.Image$productArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Image$productArgs<ExtArgs>>
+  ): Prisma.Prisma__ProductClient<
+    runtime.Types.Result.GetResult<
+      Prisma.$ProductPayload<ExtArgs>,
+      T,
+      'findUniqueOrThrow',
+      GlobalOmitOptions
+    > | null,
+    null,
+    ExtArgs,
+    GlobalOmitOptions
+  >;
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1063,6 +1517,8 @@ export interface ImageFieldRefs {
   readonly file_id: Prisma.FieldRef<'Image', 'String'>;
   readonly url: Prisma.FieldRef<'Image', 'String'>;
   readonly userId: Prisma.FieldRef<'Image', 'String'>;
+  readonly shopId: Prisma.FieldRef<'Image', 'String'>;
+  readonly productId: Prisma.FieldRef<'Image', 'String'>;
   readonly createdAt: Prisma.FieldRef<'Image', 'DateTime'>;
   readonly updatedAt: Prisma.FieldRef<'Image', 'DateTime'>;
 }
@@ -1459,6 +1915,48 @@ export type ImageAggregateRawArgs<
    * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
    */
   options?: runtime.InputJsonValue;
+};
+
+/**
+ * Image.shop
+ */
+export type Image$shopArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Shop
+   */
+  select?: Prisma.ShopSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Shop
+   */
+  omit?: Prisma.ShopOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ShopInclude<ExtArgs> | null;
+  where?: Prisma.ShopWhereInput;
+};
+
+/**
+ * Image.product
+ */
+export type Image$productArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Product
+   */
+  select?: Prisma.ProductSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Product
+   */
+  omit?: Prisma.ProductOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProductInclude<ExtArgs> | null;
+  where?: Prisma.ProductWhereInput;
 };
 
 /**

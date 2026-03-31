@@ -54,6 +54,10 @@ export const AnyNull = runtime.objectEnumValues.instances.AnyNull;
 export const ModelName = {
   User: 'User',
   Image: 'Image',
+  Seller: 'Seller',
+  Shop: 'Shop',
+  Product: 'Product',
+  ShopReview: 'ShopReview',
 } as const;
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -79,11 +83,74 @@ export const ImageScalarFieldEnum = {
   file_id: 'file_id',
   url: 'url',
   userId: 'userId',
+  shopId: 'shopId',
+  productId: 'productId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
 } as const;
 
 export type ImageScalarFieldEnum = (typeof ImageScalarFieldEnum)[keyof typeof ImageScalarFieldEnum];
+
+export const SellerScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  password: 'password',
+  phone_number: 'phone_number',
+  country: 'country',
+  stripeId: 'stripeId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type SellerScalarFieldEnum =
+  (typeof SellerScalarFieldEnum)[keyof typeof SellerScalarFieldEnum];
+
+export const ShopScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  bio: 'bio',
+  category: 'category',
+  avatarUrl: 'avatarUrl',
+  coverBanner: 'coverBanner',
+  address: 'address',
+  opening_hours: 'opening_hours',
+  website: 'website',
+  socialLinks: 'socialLinks',
+  ratings: 'ratings',
+  sellerId: 'sellerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type ShopScalarFieldEnum = (typeof ShopScalarFieldEnum)[keyof typeof ShopScalarFieldEnum];
+
+export const ProductScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  price: 'price',
+  stock: 'stock',
+  shopId: 'shopId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type ProductScalarFieldEnum =
+  (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum];
+
+export const ShopReviewScalarFieldEnum = {
+  id: 'id',
+  rating: 'rating',
+  review: 'review',
+  userId: 'userId',
+  shopId: 'shopId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type ShopReviewScalarFieldEnum =
+  (typeof ShopReviewScalarFieldEnum)[keyof typeof ShopReviewScalarFieldEnum];
 
 export const SortOrder = {
   asc: 'asc',

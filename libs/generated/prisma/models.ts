@@ -9,4 +9,8 @@
  */
 export type * from './models/User';
 export type * from './models/Image';
+export type * from './models/Seller';
+export type * from './models/Shop';
+export type * from './models/Product';
+export type * from './models/ShopReview';
 export type * from './commonInputTypes';

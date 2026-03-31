@@ -8,7 +8,8 @@
   "exports": {
     ".": "./prisma.ts",
     "./redis": "./redis/redis.ts",
-    "./prisma": "./prisma.ts"
+    "./prisma": "./prisma.ts",
+    "./generated/prisma/client": "./generated/prisma/client.ts"
   },
   "dependencies": {
     "@upstash/redis": "^1.37.0"

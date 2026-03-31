@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+        h1 {
+            color: #007BFF;
+        }
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #007BFF;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <title>Seller Account Activation</title>
+</head>
+<body>
+    <h1>Welcome to OmniHub, <%= name %>!</h1>
+    <p>We're excited to have you join us as a seller on our platform.</p>
+    <p>Thank you for registering. Your OTP code is:</p>
+    <h2 style="color: #007BFF; font-size: 24px; letter-spacing: 2px;"><%= otp %></h2>
+    <p>This OTP will expire in 5 minutes.</p>
+    <p>Once verified, you'll be able to set up your shop and start selling.</p>
+    <p>If you did not sign up for this account, please ignore this email.</p>
+    <p>Best regards,<br>The OmniHub Team</p>
+</body>
+</html>

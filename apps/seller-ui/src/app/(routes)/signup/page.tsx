@@ -7,11 +7,12 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { COUNTRIES } from '../../../constants/countries';
+import CreateShop from '../../../shared/modules/auth/create-shop';
 
 type FormData = {
   name: string;
   email: string;
-  phone: string;
+  phone_number: string;
   country: string;
   password: string;
 };
@@ -28,7 +29,8 @@ const Signup = () => {
   const [canResend, setCanResend] = useState(true);
   const [timer, setTimer] = useState(60);
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const [userData, setUserData] = useState<FormData | null>(null);
+  const [sellerData, setSellerData] = useState<FormData | null>(null);
+  const [sellerId, setSellerId] = useState<string | null>(null);
 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -70,7 +72,7 @@ const Signup = () => {
   const signupMutation = useMutation({
     mutationFn: async (data: FormData) => {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_URI}/api/user-registration`,
+        `${process.env.NEXT_PUBLIC_SERVER_URI}/api/seller-registration`,
         data
       );
       return response.data;
@@ -78,7 +80,7 @@ const Signup = () => {
 
     onSuccess: (_, formData) => {
       setServerError(null);
-      setUserData(formData);
+      setSellerData(formData);
       setShowOtp(true);
       setCanResend(false);
       setTimer(60);
@@ -93,18 +95,20 @@ const Signup = () => {
   // Verify OTP Mutation
   const verifyOtpMutation = useMutation({
     mutationFn: async () => {
-      if (!userData) return;
+      if (!sellerData) return;
 
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/verify-user`, {
-        ...userData,
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/verify-seller`, {
+        ...sellerData,
         otp: otp.join(''),
       });
       return response.data;
     },
 
-    onSuccess: () => {
+    onSuccess: (data) => {
       setServerError(null);
-      router.push('/login');
+
+      setSellerId(data?.seller?.id);
+      setActiveStep(2);
     },
 
     onError: (error: AxiosError<ApiErrorResponse>) => {
@@ -152,13 +156,13 @@ const Signup = () => {
 
   // Resend OTP
   const resendOtp = async () => {
-    if (!canResend || !userData) return;
+    if (!canResend || !sellerData) return;
 
     try {
       setServerError(null);
 
       await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/resend-otp`, {
-        email: userData.email,
+        email: sellerData.email,
       });
 
       setTimer(60);
@@ -167,6 +171,33 @@ const Signup = () => {
     } catch (error) {
       console.error(error);
       setServerError('Failed to resend OTP. Try again.');
+    }
+  };
+
+  const connectStripe = async () => {
+    try {
+      if (!sellerId) {
+        setServerError(
+          'Seller ID is missing. Please verify your account before connecting Stripe.'
+        );
+        return;
+      }
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_URI}/api/create-stripe-link`,
+        { sellerId }
+      );
+
+      if (response.data.url) {
+        window.location.href = response.data.url;
+      } else {
+        setServerError('Failed to create Stripe link. Try again.');
+      }
+    } catch (error) {
+      console.error('connectStripe error:', error);
+      const axiosError = error as AxiosError<ApiErrorResponse>;
+      const message = axiosError.response?.data?.message || axiosError.message || 'Unknown error';
+      setServerError(`Stripe connection failed: ${message}`);
     }
   };
 
@@ -235,15 +266,15 @@ const Signup = () => {
 
                 {/* Phone */}
                 <div className="mb-2">
-                  <label htmlFor="phone" className="block text-gray-700 mb-1">
+                  <label htmlFor="phone_number" className="block text-gray-700 mb-1">
                     Phone
                   </label>
                   <input
-                    id="phone"
+                    id="phone_number"
                     type="tel"
                     placeholder="+254712345678"
                     className="w-full p-2 border border-gray-300 outline-0 !rounded"
-                    {...register('phone', {
+                    {...register('phone_number', {
                       required: 'Phone is required',
                       pattern: {
                         value: /^[+]?[0-9\s\-()]{7,}$/,
@@ -251,7 +282,9 @@ const Signup = () => {
                       },
                     })}
                   />
-                  {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
+                  {errors.phone_number && (
+                    <p className="text-red-500 text-sm">{errors.phone_number.message}</p>
+                  )}
                 </div>
 
                 {/* Country */}
@@ -373,6 +406,21 @@ const Signup = () => {
               </div>
             )}
           </>
+        )}
+
+        {activeStep === 2 && <CreateShop sellerId={sellerId} setActiveStep={setActiveStep} />}
+
+        {activeStep === 3 && (
+          <div className="text-center">
+            <h3 className="text-2xl font-semibold">Connect Bank Account</h3>
+            <br />
+            <button
+              className="w-full m-auto flex items-center justify-center gap-3 text-lg bg-slate-bg text-white py-2 rounded-lg"
+              onClick={connectStripe}
+            >
+              Connect with Stripe
+            </button>
+          </div>
         )}
       </div>
     </div>
