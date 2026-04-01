@@ -15,8 +15,8 @@ declare module 'express' {
 const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const token =
-      req.cookies['accessToken'] ||
       req.cookies['seller-access-token'] ||
+      req.cookies['accessToken'] ||
       req.headers.authorization?.split(' ')[1];
 
     if (!token) {
@@ -66,6 +66,11 @@ const isAuthenticated = async (req: Request, res: Response, next: NextFunction) 
 
     return next();
   } catch (error) {
+    // Check if it's a JWT error (expired or invalid)
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    if (errorMessage.includes('jwt') || errorMessage.includes('expired')) {
+      return res.status(401).json({ message: 'Unauthorized! Token expired or invalid.' });
+    }
     return next(error);
   }
 };

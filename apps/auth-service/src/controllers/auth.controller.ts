@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { prisma } from '@multi-vendor-ecommerce/prisma';
+import type { Prisma } from '@multi-vendor-ecommerce/prisma';
 import redis from '@multi-vendor-ecommerce/redis';
 import {
   validateRegistrationData,
@@ -168,10 +169,13 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
   }
 };
 
-// Refresh token user
+// Refresh token
 export const refreshToken = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const refreshToken = req.cookies.refreshToken;
+    const refreshToken =
+      req.cookies['refreshToken'] ||
+      req.cookies['seller-refresh-token'] ||
+      req.headers.authorization?.split(' ')[1];
 
     if (!refreshToken) {
       return new ValidationError('Unauthorized! No refresh token.');
@@ -186,9 +190,17 @@ export const refreshToken = async (req: Request, res: Response, next: NextFuncti
       return new AuthenticationError('Forbidden! Invalid refresh token.');
     }
 
-    const user = await prisma.user.findUnique({ where: { id: decoded.userId } });
+    let account;
+    if (decoded.role === 'user') {
+      account = await prisma.user.findUnique({ where: { id: decoded.userId } });
+    } else if (decoded.role === 'seller') {
+      account = await prisma.seller.findUnique({
+        where: { id: decoded.userId },
+        include: { shop: true },
+      });
+    }
 
-    if (!user) {
+    if (!account) {
       return new AuthenticationError('Forbidden! Account not found');
     }
 
@@ -201,7 +213,11 @@ export const refreshToken = async (req: Request, res: Response, next: NextFuncti
       { expiresIn: '15m' }
     );
 
-    setCookie(res, 'accessToken', newAccessToken);
+    if (decoded.role === 'user') {
+      setCookie(res, 'accessToken', newAccessToken);
+    } else if (decoded.role === 'seller') {
+      setCookie(res, 'seller-access-token', newAccessToken);
+    }
 
     return res.status(201).json({ success: true });
   } catch (error) {
@@ -370,7 +386,13 @@ export const createShop = async (req: Request, res: Response, next: NextFunction
       throw new ValidationError('Name, bio, category, address and sellerId are required');
     }
 
-    const shopData: any = {
+    // Verify seller exists
+    const seller = await prisma.seller.findUnique({ where: { id: sellerId } });
+    if (!seller) {
+      throw new ValidationError('Seller not found');
+    }
+
+    const shopData: Prisma.ShopUncheckedCreateInput = {
       name,
       bio,
       category,
